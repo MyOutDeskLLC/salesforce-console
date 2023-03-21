@@ -108,6 +108,7 @@
     }
 
     async function login() {
+        errors.value = [];
         if (!email.value || !password.value || !clientId.value || !clientSecret.value) {
             return;
         }

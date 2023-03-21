@@ -11,8 +11,8 @@
                         </button>
                     </div>
                 </div>
-                <ul class="text-xs divide-gray-400 divide-y">
-                    <li v-for="recentQuery in recentQueries" class="truncate px-1 py-2" @click="changeQuery(recentQuery)">
+                <ul class="divide-gray-400 divide-y tracking-wider" style="font-size: 0.6rem">
+                    <li v-for="recentQuery in recentQueries" class="cursor-pointer truncate px-1 py-1 hover:bg-sf-100" :class="[selectedQuery === recentQuery ? 'bg-sf-100' : '']" @click="changeQuery(recentQuery)">
                         {{ recentQuery }}
                     </li>
                 </ul>
@@ -62,6 +62,7 @@
     const tableHeaders = ref<string[]>([]);
     const tableRowData = ref<string[]>([]);
     const db = new Localbase('db');
+    const selectedQuery = ref('');
     const records = ref(0);
 
     function handleSuccessfulLogin() {
@@ -73,7 +74,7 @@
     }
 
     function changeQuery(query: string) {
-        queryString.value = query;
+        selectedQuery.value = queryString.value = query;
     }
 
     async function submit() {
@@ -145,6 +146,7 @@
     }
 
     function handleKeyDown(e: KeyboardEvent) {
+        console.log(e);
         if (e.metaKey && e.code === 'KeyR') {
             e.preventDefault();
             window.location.reload();

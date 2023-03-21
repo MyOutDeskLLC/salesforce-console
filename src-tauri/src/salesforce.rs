@@ -91,8 +91,12 @@ async fn connect_to_sf(client_id: String, client_secret: String, username: Strin
     let mut client = Client::new(Some(client_id), Some(client_secret));
     if username.contains(".fullsb") {
         client.set_login_endpoint("https://myoutdeskllc--fullsb.my.salesforce.com");
+        client.set_instance_url("https://myoutdeskllc--fullsb.my.salesforce.com/");
+
     } else {
         client.set_login_endpoint("https://myoutdeskllc.my.salesforce.com");
+        client.set_instance_url("https://myoutdeskllc.my.salesforce.com/");
+
     }
 
     match client.login_with_credential(username, password).await {
