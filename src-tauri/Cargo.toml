@@ -1,0 +1,26 @@
+[package]
+name = "salesforce-console"
+version = "1.0.0"
+description = "Simple console to query salesforce instead of using the web interface."
+authors = ["lancet@myoutdesk.com"]
+license = "MTI"
+repository = ""
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.2", features = [] }
+
+[dependencies]
+tauri = { version = "1.2", features = ["shell-open"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rustforce = {git="https://github.com/tance77/rustforce", rev="b8313af"}
+tokio = { version = "1", features = ["full"] }
+futures = "0.3"
+
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
