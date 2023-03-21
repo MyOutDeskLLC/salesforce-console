@@ -146,13 +146,13 @@
     }
 
     function handleKeyDown(e: KeyboardEvent) {
-        console.log(e);
-        if (e.metaKey && e.code === 'KeyR') {
+        if(e.metaKey || e.ctrlKey){
+        if ( e.code === 'KeyR') {
             e.preventDefault();
             window.location.reload();
             return;
         }
-        if (e.metaKey && e.code === 'Enter') {
+        if ( e.code === 'Enter') {
             e.preventDefault();
             //if its disabled, don't do anything
             if (disabled.value) {
@@ -161,6 +161,7 @@
             submit();
             return;
         }
+    }
     }
 
     function doesQueryExistInStorage(query: string) {
