@@ -167,7 +167,7 @@
             .doc({ id: btoa(query) })
             .get()
             .then((data: StoredQuery[]) => {
-                return data.length > 0;
+                return data && data.length > 0;
             });
     }
 
