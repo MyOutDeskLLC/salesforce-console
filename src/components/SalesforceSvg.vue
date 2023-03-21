@@ -17,13 +17,3 @@
 				</g>
 		</svg>
 </template>
-
-<script>
-export default {
-		name: "SalesforceSvg"
-}
-</script>
-
-<style scoped>
-
-</style>
