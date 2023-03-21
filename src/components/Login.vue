@@ -31,26 +31,26 @@
                     <div>
                         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
                         <div class="mt-2">
-                            <input v-model="email" id="email" name="email" type="email" autocomplete="email" required="" class="block w-full rounded-md border-0 placeholder:text-gray-400 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 py-1.5 focus:ring-sf-600 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6" />
+                            <input v-model="email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 placeholder:text-gray-400 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 py-1.5 focus:ring-sf-600 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6" />
                         </div>
                     </div>
 
                     <div>
                         <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
                         <div class="mt-2">
-                            <input v-model="password" id="password" name="password" type="password" autocomplete="current-password" required="" class="block w-full rounded-md border-0 placeholder:text-gray-400 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 py-1.5 focus:ring-sf-600 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6" />
+                            <input v-model="password" id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 placeholder:text-gray-400 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 py-1.5 focus:ring-sf-600 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6" />
                         </div>
                     </div>
                     <div>
                         <label for="client_id" class="block text-sm font-medium leading-6 text-gray-900">Client ID</label>
                         <div class="mt-2">
-                            <input v-model="clientId" id="client_id" name="client_id" type="text" autocomplete="client_id" required="" class="block w-full rounded-md border-0 placeholder:text-gray-400 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 py-1.5 focus:ring-sf-600 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6" />
+                            <input v-model="clientId" id="client_id" name="client_id" type="text" autocomplete="client_id" required class="block w-full rounded-md border-0 placeholder:text-gray-400 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 py-1.5 focus:ring-sf-600 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6" />
                         </div>
                     </div>
                     <div>
                         <label for="client_secret" class="block text-sm font-medium leading-6 text-gray-900">Client Secret</label>
                         <div class="mt-2">
-                            <input v-model="clientSecret" id="client_secret" name="client_secret" type="text" autocomplete="client_secret" required="" class="block w-full rounded-md border-0 placeholder:text-gray-400 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 py-1.5 focus:ring-sf-600 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6" />
+                            <input v-model="clientSecret" id="client_secret" name="client_secret" type="text" autocomplete="client_secret" required class="block w-full rounded-md border-0 placeholder:text-gray-400 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 py-1.5 focus:ring-sf-600 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6" />
                         </div>
                     </div>
 
@@ -68,7 +68,7 @@
 
     import SalesforceSvg from './SalesforceSvg.vue';
     import Localbase from 'localbase';
-    import { onMounted, computed, ref, watch } from 'vue';
+    import { onMounted, ref, watch } from 'vue';
     import TrashSvg from './TrashSvg.vue';
     import ErrorAlert from './ErrorAlert.vue';
     import Spinner from './Spinner.vue';

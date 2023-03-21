@@ -1,14 +1,17 @@
 {
   "name": "salesforce-console",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "td": "tauri dev"
+    "tb": "tauri build && open src-tauri/target/release/bundle",
+    "tbv": "tauri build -v && open src-tauri/target/release/bundle",
+    "td": "tauri dev",
+    "tdv": "tauri dev -v"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",

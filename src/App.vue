@@ -62,7 +62,7 @@
     const tableHeaders = ref<string[]>([]);
     const tableRowData = ref<string[]>([]);
     const db = new Localbase('db');
-    const records = ref(0)
+    const records = ref(0);
 
     function handleSuccessfulLogin() {
         loggedIn.value = true;
@@ -84,7 +84,7 @@
                 fieldSubqueryParensOnOwnLine: true,
                 whereClauseOperatorsIndented: true,
             });
-        } catch (error) {
+        } catch (error: any) {
             errors.value = [];
             errors.value.push(error.message);
             disabled.value = false;
@@ -104,27 +104,33 @@
         disabled.value = false;
     }
 
+    interface GenericObject {
+        [key: string]: any;
+    }
+
     function query() {
         storeQuery(queryString.value);
-        invoke('query', { query: queryString.value })
-            .then((response) => {
+        invoke<string>('query', { query: queryString.value })
+            .then((response : string) => {
                 //reset table data
                 tableHeaders.value = tableRowData.value = [];
                 //parse the JSON from Rust
-                let data = JSON.parse(response);
+                let data: GenericObject = JSON.parse(response);
 
                 //delete the attributes from each row
+                //@ts-ignore
                 data = data.map(({ attributes, ...rest }) => rest);
                 //Get the table headers from the first row
                 tableHeaders.value = Object.keys(data[0]);
                 //Get the table row data from the rest of the rows
-                data.forEach((row) => {
+                data.forEach((row: GenericObject) => {
+                    //@ts-ignore
                     tableRowData.value.push(Object.values(row));
                 });
             })
             .catch((error) => {
                 errors.value = [];
-                let parsed: Object = JSON.parse(error);
+                let parsed: [] = JSON.parse(error);
                 parsed.forEach((error: any) => {
                     errors.value.push(error.message);
                 });
@@ -155,17 +161,17 @@
         }
     }
 
-    function doesQueryExistInStorage(query) {
+    function doesQueryExistInStorage(query: string) {
         return db
             .collection('queries')
             .doc({ id: btoa(query) })
             .get()
-            .then((data) => {
+            .then((data: StoredQuery[]) => {
                 return data.length > 0;
             });
     }
 
-    async function storeQuery(query): Promise<void> {
+    async function storeQuery(query: string): Promise<void> {
         //if it already exists don't store it
         if (await doesQueryExistInStorage(query)) {
             return;
@@ -184,12 +190,20 @@
             });
     }
 
-    function getQueries(): Promise<SfLogin[]> {
-        db.collection('queries')
+    interface StoredQuery {
+        query: string;
+        updated_at: string;
+        created_at: string;
+        id: string;
+    }
+
+    function getQueries(): Promise<void> {
+        return db
+            .collection('queries')
             .get()
-            .then((data) => {
+            .then((data: StoredQuery[]) => {
                 recentQueries.value = [];
-                data.forEach((datum) => {
+                data.forEach((datum: StoredQuery) => {
                     recentQueries.value.push(datum.query);
                 });
             });
