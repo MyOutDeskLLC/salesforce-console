@@ -191,6 +191,7 @@
                         }
                     });
                     //merge two arrays
+                    //@ts-ignore
                     tableRowData.value.push(rowArray.concat(rowObjects));
                 }
 
@@ -289,6 +290,7 @@
     async function copyData() {
         let data: string[] = [];
         data.push(tableHeaders.value.join(','));
+        //@ts-ignore
         tableRowData.value.forEach((row: any[]) => {
             let rd: any = [];
             row.forEach((value: string | object) => {
