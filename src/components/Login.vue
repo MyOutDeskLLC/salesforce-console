@@ -5,18 +5,17 @@
             <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
         </div>
 
-        <div class="sm:mx-auto sm:w-full sm:max-w-md mt-6">
+        <div class="mt-6 sm:mx-auto sm:w-full sm:max-w-md">
             <ErrorAlert :errors="errors" v-if="errors.length > 0"></ErrorAlert>
         </div>
 
-
         <div class="mt-6 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
-                <div v-if="loading" class="justify-center flex">
+                <div v-if="loading" class="flex justify-center">
                     <Spinner></Spinner>
                 </div>
-                <div v-else-if="!loading && savedUsers.length > 0">
-                    <button v-for="user in savedUsers" class="mb-1 w-full border bg-gray-50 p-4 hover:bg-gray-100 rounded-sm" @click="selectAndLogin(user)">
+                <div v-else-if="!loading && savedUsers.length > 0 && !addAnotherUser">
+                    <button v-for="user in savedUsers" class="mb-1 w-full rounded-sm border bg-gray-50 p-4 hover:bg-gray-100" @click="selectAndLogin(user)">
                         <span class="flex w-full">
                             <span class="grow text-left text-sm">{{ user.email }}</span>
                             <span class="">
@@ -26,6 +25,9 @@
                             </span>
                         </span>
                     </button>
+                    <div class="mt-2 flex justify-center">
+                        <div @click="toggleNewUserAdd(true)" class="px-3 py-2 text-sm hover:underline cursor-pointer text-sf-500">Add Another</div>
+                    </div>
                 </div>
                 <form class="space-y-6" v-else>
                     <div>
@@ -55,6 +57,7 @@
                     </div>
 
                     <div>
+                        <button v-if="addAnotherUser" type="button" class="mb-2 flex w-full justify-center rounded-md border px-3 py-2 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-200 focus-visible:outline-sf-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" @click="toggleNewUserAdd(false)">Back</button>
                         <button type="button" class="flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm bg-sf-600 hover:bg-sf-500 focus-visible:outline-sf-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" @click="login">Sign in</button>
                     </div>
                 </form>
@@ -81,9 +84,10 @@
     const clientSecret = ref<string>('');
     const savedUsers = ref<SfLogin[]>([]);
     const selectedUser = ref<SfLogin>({ email: '', password: '', clientId: '', clientSecret: '' });
-    const errors = ref<String[]>([])
-    const loading = ref(false)
-    const emits = defineEmits(["success"])
+    const errors = ref<String[]>([]);
+    const loading = ref(false);
+    const emits = defineEmits(['success']);
+    const addAnotherUser = ref(false);
 
     watch(selectedUser, (user: SfLogin) => {
         handleSelectedUserChange(user);
@@ -98,13 +102,13 @@
         }
     }
 
-    function selectAndLogin(user: SfLogin){
+    function selectAndLogin(user: SfLogin) {
         selectedUser.value = user;
         email.value = selectedUser.value.email;
         password.value = selectedUser.value.password;
         clientId.value = selectedUser.value.clientId;
         clientSecret.value = selectedUser.value.clientSecret;
-        login()
+        login();
     }
 
     async function login() {
@@ -122,17 +126,25 @@
             clientSecret: clientSecret.value,
         };
 
-        invoke("login", {username: email.value, password: password.value, clientId: clientId.value, clientSecret: clientSecret.value}).then( async (response)=>{
-            errors.value = [];
-            await storeUser(user);
-            savedUsers.value = await getUsers();
-            emits("success")
-        }).catch(error=>{
-            errors.value = [];
-            errors.value.push(error)
-        }).finally(()=>{
-            loading.value = false;
+        invoke('login', {
+            username: email.value,
+            password: password.value,
+            clientId: clientId.value,
+            clientSecret: clientSecret.value,
         })
+            .then(async (response) => {
+                errors.value = [];
+                await storeUser(user);
+                savedUsers.value = await getUsers();
+                emits('success');
+            })
+            .catch((error) => {
+                errors.value = [];
+                errors.value.push(error);
+            })
+            .finally(() => {
+                loading.value = false;
+            });
     }
 
     function getUsers(): Promise<SfLogin[]> {
@@ -154,10 +166,25 @@
         savedUsers.value = await getUsers();
     }
 
+    function toggleNewUserAdd(flag: boolean) {
+        addAnotherUser.value = flag;
+        if (flag) {
+            selectedUser.value = { email: '', password: '', clientId: '', clientSecret: '' };
+        } else {
+            getUsers().then((users) => {
+                savedUsers.value = [];
+                if (users && users.length > 0) {
+                    savedUsers.value = users;
+                    selectedUser.value = users[0];
+                }
+            });
+        }
+    }
+
     onMounted(() => {
         getUsers().then((users) => {
             savedUsers.value = [];
-            if (users.length > 0) {
+            if (users && users.length > 0) {
                 savedUsers.value = users;
                 selectedUser.value = users[0];
             }
